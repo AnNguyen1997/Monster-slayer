@@ -8,46 +8,52 @@ new Vue({
   },
   methods: {
     starNewGame: function() {
+      this.resultLog = [];
+      this.isShown = true;
       this.playerHealthLeft = 100;
       this.monsterHealthLeft = 100;
     },
     attack: function() {
-      let monsterDamage = Math.max(Math.floor((Math.random() * 10) + 1), 3);
-      this.playerHealthLeft -= monsterDamage;
-      this.resultLog.unshift("Monster counter with normal attack damage the player for " + monsterDamage);
-      let playerDamage = Math.max(Math.floor((Math.random() * 12) + 1), 3);
+      let playerDamage = this.damageCalculator(3, 12);
       this.monsterHealthLeft -= playerDamage;
       this.resultLog.unshift("Player's normal attack hurt the monster for " + playerDamage);
-      if (this.playerHealthLeft <= 0) {
-        alert("You have lost!!")
-      } else if (this.monsterHealthLeft <= 0) {
-        alert("Congratulation!!")
-      }
+      this.monsterAttack();
+      this.winCondition();
     },
     specialAttack: function() {
-      let monsterDamage = Math.max(Math.floor((Math.random() * 24) + 1), 3);
-      this.playerHealthLeft -= monsterDamage;
-      this.resultLog.unshift("Monster counter with special attack damage the player for " + monsterDamage);
-      let playerDamage = Math.max(Math.floor((Math.random() * 20) + 1), 5);
+      let playerDamage = this.damageCalculator(3, 24);
       this.monsterHealthLeft -= playerDamage;
       this.resultLog.unshift("Player's special attack hurt the monster for " + playerDamage);
-      if (this.playerHealthLeft <= 0) {
-        alert("You have lost!!")
-      } else if (this.monsterHealthLeft <= 0) {
-        alert("Congratulation!!")
-      }
+      this.monsterAttack();
+      this.winCondition();
     },
     heal: function() {
-      let healAmount = Math.max(Math.floor((Math.random() * 12) + 1), 2);
+      let healAmount = this.damageCalculator(2,12);
       this.playerHealthLeft += healAmount;
       this.resultLog.unshift("Player heals himself for " + healAmount);
-      let monsterDamage = Math.max(Math.floor((Math.random() * 15) + 1), 5);
-      this.playerHealthLeft -= monsterDamage;
-      this.resultLog.unshift("Monster continue attacking for " + monsterDamage);
+      this.monsterAttack();
+      this.winCondition();
     },
     giveUp: function() {
-      alert("Gave up already ?");
-      this.resultLog = [];
+      this.playerHealthLeft = 0;
+      this.winCondition();
+    },
+    monsterAttack : function() {
+      let monsterDamage = this.damageCalculator(3, 12);
+      this.playerHealthLeft -= monsterDamage;
+      this.resultLog.unshift("Monster counter attack and damage the player for " + monsterDamage);
+    },
+    damageCalculator: function(min, max) {
+      return Math.max(Math.floor((Math.random() * max) + 1), min);
+    },
+    winCondition: function() {
+      if (this.playerHealthLeft <= 0) {
+        alert("You have lost!!")
+        this.starNewGame();
+      } else if (this.monsterHealthLeft <= 0) {
+        alert("Congratulation!!")
+        this.starNewGame();
+      }
     }
   }
 });

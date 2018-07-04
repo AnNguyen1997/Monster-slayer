@@ -28,7 +28,7 @@
     </section>
     <section class="row controls">
         <div class="small-12 columns">
-            <button id="start-game" @click="isShown = !isShown; starNewGame()" v-show="!isShown">START NEW GAME</button>
+            <button id="start-game" @click="starNewGame" v-show="!isShown">START NEW GAME</button>
         </div>
         <div class="small-12 columns" v-if="isShown">
             <button id="attack" @click="attack">ATTACK</button>
@@ -37,7 +37,7 @@
             <button id="give-up" @click="isShown = !isShown; giveUp()">GIVE UP</button>
         </div>
     </section>
-    <section class="row log">
+    <section class="row log" v-if="resultLog.length > 0">
         <div class="small-12 columns">
             <ul>
                 <li v-for="log in resultLog">
