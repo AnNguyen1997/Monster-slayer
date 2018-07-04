@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monster Slayer</title>
+    <script type="text/javascript" src="vue.js"></script>
+    <link rel="stylesheet" href="foundation.min.css">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="app">
+    <section class="row">
+        <div class="small-6 columns">
+            <h1 class="text-center">YOU</h1>
+            <div class="healthbar">
+                <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;" :style="{width: playerHealthLeft + '%'}">
+                  {{playerHealthLeft}}
+                </div>
+            </div>
+        </div>
+        <div class="small-6 columns">
+            <h1 class="text-center">MONSTER</h1>
+            <div class="healthbar">
+                <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;" :style="{width: monsterHealthLeft + '%'}">
+                  {{monsterHealthLeft}}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="row controls">
+        <div class="small-12 columns">
+            <button id="start-game" @click="isShown = !isShown; starNewGame()" v-show="!isShown">START NEW GAME</button>
+        </div>
+        <div class="small-12 columns" v-if="isShown">
+            <button id="attack" @click="attack">ATTACK</button>
+            <button id="special-attack" @click="specialAttack">SPECIAL ATTACK</button>
+            <button id="heal" @click="heal">HEAL</button>
+            <button id="give-up" @click="isShown = !isShown; giveUp()">GIVE UP</button>
+        </div>
+    </section>
+    <section class="row log">
+        <div class="small-12 columns">
+            <ul>
+                <li v-for="log in resultLog">
+                  <template v-if="log.startsWith('Player')">
+                    <div :class="['player-turn']"> {{log}}</div>
+                  </template>
+                  <template v-else>
+                    <div :class="['monster-turn']">{{log}}</div>
+                  </template>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+</body>
+    <script type="text/javascript" src="main.js"></script>
+</html>
